@@ -1,0 +1,16 @@
+# Generally a grab bag of random aliases - use 'realias' to edit them:
+# alias realias='$EDITOR ~/.aliases; source ~/.aliases'
+
+alias synergy='/usr/bin/synergys -f --name mknecht-ld1 -c /home/mknecht/.synergy' 
+alias a='source ~/.virtualenvs/linkedin/bin/activate'
+function pcat() { curl -s http://paste.corp.linkedin.com/raw/$@/; }
+function csv() { perl -ne 'print join ",", map { /(.+)(?:\s*\n)?/; $1 } <>'; }
+
+alias jps='ps auxww | grep java | egrep " -[A-Za-z0-9.]*=| -[A-Za-z0-9.]*:|-Xms|-Xmx" --color=always'
+
+alias mintall='mint build && mint build-cfg -f dev && ligradle localRelease && mint release-cfg && mint deploy'
+alias mintbld='mint build && mint release && mint deploy'
+
+alias nrestart='pushd .; cd /export/content/lid/apps/nursefe/i001; bin/control stop; bin/control start; cd /export/content/lid/apps/nurse-runner/i001; bin/control stop; bin/control start; popd'
+
+alias nreview='git review create --group Nurse-Reviewers --testing-done="Tested." --publish --no-prompt'

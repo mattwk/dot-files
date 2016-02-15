@@ -1,0 +1,285 @@
+# .bashrc
+
+umask 022
+
+join_dirs()
+{
+    for STRING in $*; do
+        [[ -d $STRING ]] && JOINED=$JOINED:$STRING
+    done
+
+    echo $JOINED | sed -e 's/^://'
+}
+
+case `uname -s` in
+    *BSD)
+	TERM=xterm
+
+        PATHDIRS=(
+            $HOME/bin
+            /sbin
+            /bin
+            /usr/sbin
+            /usr/bin
+            /usr/local/sbin
+            /usr/local/bin
+            /usr/games
+            /usr/local/bin
+        )
+        PATH=`join_dirs ${PATHDIRS[*]}`
+        unset PATHDIRS
+        ;;
+    [Ll]inux)
+	TERM=xterm-256color
+
+        PATHDIRS=(
+            $HOME/bin
+            /export/apps/xtools/bin
+            /bin
+            /usr/bin
+            /export/apps/xtools/bin
+            /usr/local/linkedin/bin
+            /export/content/linkedin/bin
+            /usr/local/bin
+            /sbin
+            /usr/sbin
+            /usr/local/sbin
+            /opt/likewise/bin/openldap
+            /usr/X11R6/bin
+            /usr/games
+            /opt/e17/bin
+            /opt/e17/sbin
+        )
+        PATH=`join_dirs ${PATHDIRS[*]}`
+        unset PATHDIRS
+
+        declare -a MANDIRS
+        MANDIRS=(
+            /usr/share/man
+            /usr/local/man
+            /usr/dt/man
+            /opt/csw/man
+            $HOME/perl5/man
+            /usr/local/linkedin/share/man
+        )
+        MANPATH=`join_dirs ${MANDIRS[*]}`
+        unset MANDIRS
+
+        ;;
+
+    SunOS)
+	TERM=xterm
+
+        declare -a MANDIRS
+        MANDIRS=(
+            $HOME/bin
+            /usr/share/man
+            /usr/local/man
+            /usr/dt/man
+            /opt/csw/man
+            $HOME/perl5/man
+        )
+        MANPATH=`join_dirs ${MANDIRS[*]}`
+        unset MANDIRS
+
+        declare -a PATHDIRS
+        PATHDIRS=(
+            $HOME/bin
+            /export/apps/xtools/bin
+            /usr/local/linkedin/bin
+            /opt/csw/bin
+	    /opt/csw/sbin
+            /opt/SunStudioExpress/bin
+            /opt/Forte/SUNWspro/bin
+            /opt/SUNWspro/bin
+            /opt/csw/gcc3/bin
+            /opt/csw/gcc4/bin
+            /opt/csw/gnu
+            /usr/local/bin
+            /usr/local/sbin
+            /usr/bin
+            /usr/sbin
+            /usr/sfw/bin
+            /usr/sfw/sbin
+            /sbin
+            /usr/ccs/bin
+            /usr/openwin/bin
+            /usr/perl5/bin
+            /opt/RICHPse/bin
+            /usr/atria/bin
+        )
+        PATH=`join_dirs ${PATHDIRS[*]}`
+        unset PATHDIRS
+
+	SEPATH=`join_dirs /opt/RICHPse/examples /opt/RICHPse/toptool`
+        ;;
+esac
+
+# Pretty ls colors
+[[ -n "`ls --version 2> /dev/null`" ]] && alias ls=`which ls`" --color=tty -F"
+[[ -r ~/.dircolors && -x "`which dircolors`" ]] && eval `dircolors ~/.dircolors`
+
+# Setup local perl libs
+[[ -d $HOME/perl5/lib/perl5 ]] && eval $(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)
+
+# If the bashrc gets sourced more than once, PERL5LIB will start getting dupes
+PERL5LIB=`perl -le 'print join ":", grep {$_}  map {$_ if !$p{$_}++} split(":", $ENV{PERL5LIB})'`
+
+# Python sys.path stuff
+#PYTHONPATH=/opt/csw/lib/python/site-packages
+
+alias realias='$EDITOR ~/.aliases; source ~/.aliases'
+source ~/.aliases
+
+if [[ -e /usr/bin/vimx ]]; then
+  EDITOR=/usr/bin/vimx
+  alias vim=/usr/bin/vimx
+else
+  EDITOR=`which vim`
+fi
+
+VISUAL=$EDITOR
+FCEDIT=$EDITOR
+PAGER=`which less`
+
+FIGNORE=.o:~
+LESS="-f-R-P?f[%f]:[STDIN].?m(file %i of %m)?x[Next\: %x]. .?lb [line %lb?L/%L]..?e(END) :?pB [%pB\%]..%t"
+RI='--format ansi'
+GREP_OPTIONS='--color=auto --exclude-dir=.git --exclude-dir=.svn'
+
+
+# Source the completion file, if it exists
+if [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+    # Add hostname completion to some new programs
+    complete -F _known_hosts xvncviewer nc
+fi
+if [ -f /opt/csw/etc/bash_completion ]; then 
+    . /opt/csw/etc/bash_completion
+    complete -F _known_hosts xvncviewer nc
+fi
+
+if [ "$BASH_VERSINFO" -ge 2 ]; then
+    shopt -s cdspell
+    shopt -s checkwinsize
+    shopt -s cmdhist
+    shopt -s histappend
+    shopt -s checkhash
+    shopt -s no_empty_cmd_completion
+    shopt -s execfail
+
+    HISTFILESIZE=100000
+    HISTDIR="$HOME/.bash_histories/`uname -n`"
+    [[ ! -d $HISTDIR ]] && mkdir -p "$HISTDIR"
+    HISTFILE="$HISTDIR/`date +%Y_%m`"
+    # Suppress duplicates, bare "ls" and bg,fg and exit
+    HISTIGNORE="&:ls:[bf]g:exit"
+fi
+
+# Colors and PS1
+_NORM="\033[0m"
+_BLK="\033[0;30m"
+_RED="\033[0;31m"
+_GRN="\033[0;32m"
+_YEL="\033[0;33m"
+_BLU="\033[0;34m"
+_MAG="\033[0;35m"
+_CYN="\033[0;36m"
+_WHT="\033[0;37m"
+
+_BBLK="\033[1;30m"
+_BRED="\033[1;31m"
+_BGRN="\033[1;32m"
+_BYEL="\033[1;33m"
+_BBLU="\033[1;34m"
+_BMAG="\033[1;35m"
+_BCYN="\033[1;36m"
+_BWHT="\033[1;37m"
+
+#_NRM_COLORS_="${_BLK}BLACK${_NORM} ${_RED}RED${_NORM} ${_GRN}GREEN${_NORM} ${_YEL}YELLOW${_NORM} ${_BLU}BLUE${_NORM} ${_MAG}MAGENTA${_NORM} ${_CYN}CYAN${_NORM} ${_WHT}WHITE${_NORM}"
+#_BLD_COLORS_="${_BBLK}BLACK${_NORM} ${_BRED}RED${_NORM} ${_BGRN}GREEN${_NORM} ${_BYEL}YELLOW${_NORM} ${_BBLU}BLUE${_NORM} ${_BMAG}MAGENTA${_NORM} ${_BCYN}CYAN${_NORM} ${_BWHT}WHITE${_NORM}"
+
+case `uname -n` in
+    *.prod)
+        PAREN_COLOR="\[${_BWHT}\]"
+        MC="\[${_RED}\]" # MC is "my" color.  For logname and hostname
+        DC="\[${_BLU}\]" # DC is default color.  For everything else
+        ;;
+    *.stg)
+        PAREN_COLOR="\[${_GRN}\]"
+        MC="\[${_BGRN}\]"
+        DC="\[${_BLU}\]"
+        ;;
+    *.biz)
+        PAREN_COLOR="\[${_BLU}\]"
+        MC="\[${_CYN}\]"
+        DC="\[${_BBLU}\]"
+        ;;
+    *)
+        PAREN_COLOR="\[${_WHT}\]"
+        MC="\[${_BCYN}\]"
+        DC="\[${_CYN}\]"
+        ;;
+esac
+
+# OP is Open Paren
+OP="${PAREN_COLOR}("
+# CP is Close Paren
+CP="${PAREN_COLOR})"
+
+# Root Overrides
+if [ `id | cut -b5` = 0 ]; then
+	MC="\[${_BRED}\]"
+fi
+
+PS1HOST="${OP}${MC}\u${DC}@${MC}\h${CP}"
+PS1DATE="${OP}${DC}\d${CP}"
+PS1TIME="${OP}${DC}\t${CP}"
+PS1TTY="${OP}${DC}$(tty)${CP}"
+PS1GIT="${OP}${DC}$(__git_ps1|tr -d ' ()')${CP}"
+PS1DIR="${OP}${DC}\w${CP}"
+PS1RETVAL="${OP}${DC}\${?}${CP}"
+PS1END="\[$_NORM\]\r\n\[$_WHT\]\\$ "
+
+case $TERM in
+    [Ex]term*) TITLE_WINDOW="\[\033]0;\h :: \w\007\]" ;;
+    *)         TITLE_WINDOW='' ;;
+esac
+
+# Some things need to be computed.
+prompt_cmd() {
+    # Compute RETVAL
+    if [[ $? -eq 0 ]]; then
+        PS1RETVAL="${OP}${DC}0${CP}"
+    else
+        PS1RETVAL="${OP}\[${_BRED}\]${?}${CP}"
+    fi
+
+    PS1GIT=$(__git_ps1 2>/dev/null|tr -d ' ()')
+    if [[ -n $PS1GIT ]]; then
+      PS1GIT="${OP}\[${_YEL}\]${PS1GIT}${CP}"
+    fi
+
+    history -a  # Save last user cmd to bash_history
+
+    PS1="${TITLE_WINDOW}${PS1HOST}${PS1RETVAL}${PS1DATE}${PS1TIME}${PS1GIT}${PS1DIR}${PS1END}"
+}
+
+PROMPT_COMMAND=prompt_cmd
+
+PS1="${TITLE_WINDOW}${PS1HOST}${PS1RETVAL}${PS1DATE}${PS1TIME}${PS1TTY}${PS1DIR}${PS1END}"
+
+export PATH PS1 EDITOR VISUAL PAGER LESS FCEDIT SEPATH MANPATH TERM GREP_OPTIONS RI HISTFILESIZE HISTFILE HISTIGNORE
+export MODULEBUILDRC PERL_MM_OPT PERL5LIB PYTHONPATH
+
+[[ -f ~/perl5/perlbrew/etc/bashrc ]] && source ~/perl5/perlbrew/etc/bashrc
+
+# SSH keychains
+[ -f $HOME/.keychain/$HOSTNAME-sh ] && . $HOME/.keychain/$HOSTNAME-sh
+if [ `id | cut -b5` = 0 ]; then
+  DIR=/root/.keychain
+  [ -f $DIR/$HOSTNAME-sh ] && . $DIR/$HOSTNAME-sh
+fi
+# Redhat style ssh keychain
+[ -z "$(ssh-add -l)" ] && ssh-add
+
