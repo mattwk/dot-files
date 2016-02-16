@@ -13,3 +13,12 @@
 [submodule "dot-vim/bundle/braceless.vim"]
 	path = dot-vim/bundle/braceless.vim
 	url = https://github.com/tweekmonster/braceless.vim
+[submodule "dot-vim/bundle/vim-json"]
+	path = dot-vim/bundle/vim-json
+	url = https://github.com/elzr/vim-json
+[submodule "dot-vim/bundle/TagHighlight"]
+	path = dot-vim/bundle/TagHighlight
+	url = https://github.com/vim-scripts/TagHighlight
+[submodule "dot-vim/bundle/vim-airline"]
+	path = dot-vim/bundle/vim-airline
+	url = https://github.com/vim-airline/vim-airline
