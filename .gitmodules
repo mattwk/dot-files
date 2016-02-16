@@ -1,0 +1,15 @@
+[submodule "dot-vim/bundle/syntastic"]
+	path = dot-vim/bundle/syntastic
+	url = https://github.com/scrooloose/syntastic
+[submodule "dot-vim/bundle/jedi-vim"]
+	path = dot-vim/bundle/jedi-vim
+	url = https://github.com/davidhalter/jedi-vim
+[submodule "dot-vim/bundle/vim-colors-solarized"]
+	path = dot-vim/bundle/vim-colors-solarized
+	url = https://github.com/altercation/vim-colors-solarized
+[submodule "dot-vim/bundle/vim-python-pep8-indent"]
+	path = dot-vim/bundle/vim-python-pep8-indent
+	url = https://github.com/hynek/vim-python-pep8-indent
+[submodule "dot-vim/bundle/braceless.vim"]
+	path = dot-vim/bundle/braceless.vim
+	url = https://github.com/tweekmonster/braceless.vim

@@ -1,2 +1,2 @@
 # dot-files
-There are my dotfiles. There are many like it, but this one is mine.
+These are my dotfiles. There are many like them, but these are mine.
