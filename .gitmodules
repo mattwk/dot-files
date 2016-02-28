@@ -22,3 +22,9 @@
 [submodule "dot-vim/bundle/vim-airline"]
 	path = dot-vim/bundle/vim-airline
 	url = https://github.com/vim-airline/vim-airline
+[submodule "dot-vim/bundle/vim-airline-themes"]
+	path = dot-vim/bundle/vim-airline-themes
+	url = https://github.com/vim-airline/vim-airline-themes
+[submodule "dot-vim/bundle/vim-fugitive"]
+	path = dot-vim/bundle/vim-fugitive
+	url = https://github.com/tpope/vim-fugitive

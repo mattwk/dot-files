@@ -12,6 +12,9 @@ syntax on
 
 set nohlsearch
 set wrap
+"set relativenumber
+"set number
+set bs=2
 
 set modeline    " Debian overrides this in /usr/share/vim/vim73/debian.vim
 
@@ -68,8 +71,8 @@ colorscheme solarized
 map <C-J> <C-W>j<C-W>_
 map <C-K> <C-W>k<C-W>_
 " Same for tabs
-nmap <C-h> :tabprev<CR>
-nmap <C-l> :tabnext<CR>
+"nmap <C-h> :tabprev<CR>
+"nmap <C-l> :tabnext<CR>
 
 set expandtab
 set sw=2
@@ -152,4 +155,17 @@ let g:syntastic_python_checkers = ['pylint']
 
 " Braceless
 " https://github.com/tweekmonster/braceless.vim
-autocmd FileType python BracelessEnable +indent +fold +highlight-cc2 +colorcolmn
+"autocmd FileType python BracelessEnable +indent +fold +highlight-cc2 +colorcolmn
+autocmd FileType python BracelessEnable +indent
+
+" Syntastic cargo cult
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+"let g:syntastic_always_populate_loc_list = 1
+"let g:syntastic_auto_loc_list = 1
+"let g:syntastic_check_on_open = 1
+"let g:syntastic_check_on_wq = 0
+
+" vim-json
+let g:vim_json_syntax_conceal = 0  " Turn off auto-hiding of quotes

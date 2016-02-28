@@ -14,3 +14,6 @@ alias mintbld='mint build && mint release && mint deploy'
 alias nrestart='pushd .; cd /export/content/lid/apps/nursefe/i001; bin/control stop; bin/control start; cd /export/content/lid/apps/nurse-runner/i001; bin/control stop; bin/control start; popd'
 
 alias nreview='git review create --group Nurse-Reviewers --testing-done="Tested." --publish --no-prompt'
+alias ntreview='git review create --group Nurse-Reviewers --testing-done="$(cat /tmp/tst)" --publish --no-prompt'
+
+alias gbranch='git branch -rv'

@@ -34,13 +34,13 @@ case `uname -s` in
 
         PATHDIRS=(
             $HOME/bin
+            /usr/local/bin
             /export/apps/xtools/bin
             /bin
             /usr/bin
             /export/apps/xtools/bin
             /usr/local/linkedin/bin
             /export/content/linkedin/bin
-            /usr/local/bin
             /sbin
             /usr/sbin
             /usr/local/sbin
@@ -111,6 +111,11 @@ case `uname -s` in
         PATH=`join_dirs ${PATHDIRS[*]}`
         unset PATHDIRS
 
+        if [ -f /opt/csw/etc/bash_completion ]; then
+            . /opt/csw/etc/bash_completion
+            complete -F _known_hosts xvncviewer nc
+        fi
+
 	SEPATH=`join_dirs /opt/RICHPse/examples /opt/RICHPse/toptool`
         ;;
 esac
@@ -131,12 +136,12 @@ PERL5LIB=`perl -le 'print join ":", grep {$_}  map {$_ if !$p{$_}++} split(":", 
 alias realias='$EDITOR ~/.aliases; source ~/.aliases'
 source ~/.aliases
 
-if [[ -e /usr/bin/vimx ]]; then
-  EDITOR=/usr/bin/vimx
-  alias vim=/usr/bin/vimx
-else
+#if [[ -e /usr/bin/vimx ]]; then
+#  EDITOR=/usr/bin/vimx
+#  alias vim=/usr/bin/vimx
+#else
   EDITOR=`which vim`
-fi
+#fi
 
 VISUAL=$EDITOR
 FCEDIT=$EDITOR
@@ -152,10 +157,6 @@ GREP_OPTIONS='--color=auto --exclude-dir=.git --exclude-dir=.svn'
 if [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
     # Add hostname completion to some new programs
-    complete -F _known_hosts xvncviewer nc
-fi
-if [ -f /opt/csw/etc/bash_completion ]; then 
-    . /opt/csw/etc/bash_completion
     complete -F _known_hosts xvncviewer nc
 fi
 
@@ -196,24 +197,40 @@ _BMAG="\033[1;35m"
 _BCYN="\033[1;36m"
 _BWHT="\033[1;37m"
 
+#TODO: Check for 256 color compat?
+# Oh man these purple ones are kind of grody
+_EPURP="\033[38;5;93m"
+_EBLUD="\033[38;5;88m"
+_EPOW="\033[38;5;165m"
+
+_EB1="\033[38;5;51m"
+_EB2="\033[38;5;39m"
+_EG1="\033[38;5;48m"
+
+
 #_NRM_COLORS_="${_BLK}BLACK${_NORM} ${_RED}RED${_NORM} ${_GRN}GREEN${_NORM} ${_YEL}YELLOW${_NORM} ${_BLU}BLUE${_NORM} ${_MAG}MAGENTA${_NORM} ${_CYN}CYAN${_NORM} ${_WHT}WHITE${_NORM}"
 #_BLD_COLORS_="${_BBLK}BLACK${_NORM} ${_BRED}RED${_NORM} ${_BGRN}GREEN${_NORM} ${_BYEL}YELLOW${_NORM} ${_BBLU}BLUE${_NORM} ${_BMAG}MAGENTA${_NORM} ${_BCYN}CYAN${_NORM} ${_BWHT}WHITE${_NORM}"
 
 case `uname -n` in
-    *.prod)
+    *.prod*)
         PAREN_COLOR="\[${_BWHT}\]"
         MC="\[${_RED}\]" # MC is "my" color.  For logname and hostname
         DC="\[${_BLU}\]" # DC is default color.  For everything else
         ;;
-    *.stg)
+    *.stg*)
         PAREN_COLOR="\[${_GRN}\]"
         MC="\[${_BGRN}\]"
         DC="\[${_BLU}\]"
         ;;
-    *.biz)
+    *.biz*)
         PAREN_COLOR="\[${_BLU}\]"
         MC="\[${_CYN}\]"
         DC="\[${_BBLU}\]"
+        ;;
+    *mknecht*)
+        PAREN_COLOR="\[${_EG1}\]"
+        MC="\[${_EB1}\]"
+        DC="\[${_EB2}\]"
         ;;
     *)
         PAREN_COLOR="\[${_WHT}\]"
@@ -236,7 +253,7 @@ PS1HOST="${OP}${MC}\u${DC}@${MC}\h${CP}"
 PS1DATE="${OP}${DC}\d${CP}"
 PS1TIME="${OP}${DC}\t${CP}"
 PS1TTY="${OP}${DC}$(tty)${CP}"
-PS1GIT="${OP}${DC}$(__git_ps1|tr -d ' ()')${CP}"
+#PS1GIT="${OP}${DC}$(__git_ps1|tr -d ' ()')${CP}"
 PS1DIR="${OP}${DC}\w${CP}"
 PS1RETVAL="${OP}${DC}\${?}${CP}"
 PS1END="\[$_NORM\]\r\n\[$_WHT\]\\$ "
